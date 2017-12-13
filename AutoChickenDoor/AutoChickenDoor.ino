@@ -11,6 +11,7 @@ const int bottomReedPin = 11;
 const int topReedPin = 12;
 // timeout for the loop (in case something goes wrong)
 const int timeout  = 10000;
+const int waitTimeLightSensor = 600000;
 
 bool doorOpen = false; // start off with door closed status
 int analogValue = 0; // init the analog value to zero
@@ -30,9 +31,9 @@ void loop() {
   // if fatal error is set, blink the leds
   // and don't let the code run
   if(fatalError){
-    digitalWrite(ledPin, LOW);
+    digitalWrite(redLedPin, LOW);
     delay(500);
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(greenLedPin, HIGH);
     delay(500);
   }else{
     analogValue = analogRead(lightSensorPin);
@@ -47,8 +48,11 @@ void loop() {
     if(analogValue < 5){
       Serial.print("Door open status: ");
       Serial.println(doorOpen);
-      if(digitalRead(ledPin) == LOW){
-        digitalWrite(ledPin, HIGH);
+      if(digitalRead(greenLedPin) == LOW){
+        digitalWrite(greenLedPin, HIGH);
+      }
+      if(digitalRead(redLedPin) == HIGH){
+        digitalWrite(redLedPin, LOW);
       }
       if(doorOpen){
         close_door();
@@ -56,14 +60,17 @@ void loop() {
     }else if(analogValue > 15){
       Serial.print("door open status: ");
       Serial.println(doorOpen);
-      if(digitalRead(ledPin) == HIGH){
-        digitalWrite(ledPin, LOW);
+      if(digitalRead(greenLedPin) == HIGH){
+        digitalWrite(greenLedPin, LOW);
+      }
+      if(digitalRead(redLedPin) == LOW){
+        digitalWrite(redLedPin, HIGH);
       }
       if(!doorOpen){
         open_door();
       }
     }
-    delay(10000);
+    delay(waitTimeLightSensor);
   }
 }
 
@@ -72,11 +79,11 @@ void close_door(){
   digitalWrite(relayTwoPin, HIGH);
   numTrys = 0;  
   while(digitalRead(bottomReedPin) == LOW){
-//    if(numTrys >= timeout){
-//      fatalError = true;
-//      break;
-//    }
-//    numTrys += 200;
+    if(numTrys >= timeout){
+      fatalError = true;
+      break;
+    }
+    numTrys += 200;
     delay(200);
   }
   delay(400);
@@ -91,11 +98,11 @@ void open_door(){
   
   numTrys = 0;
   while(digitalRead(topReedPin) == LOW){
-//    if(numTrys >= timeout){
-//      fatalError = true;
-//      break;
-//    }
-//    numTrys += 1;
+    if(numTrys >= timeout){
+      fatalError = true;
+      break;
+    }
+    numTrys += 1;
   }
   digitalWrite(relayOnePin, LOW);
   doorOpen = true;
