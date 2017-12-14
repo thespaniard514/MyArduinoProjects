@@ -19,7 +19,8 @@ int numTrys = 0;
 bool fatalError = false; // used to trigger an error if loop happens too long
 
 void setup() {
-  pinMode(ledPin, OUTPUT);
+  pinMode(redLedPin, OUTPUT);
+  pinMode(greenLedPin, OUTPUT);
   pinMode(relayOnePin, OUTPUT);
   pinMode(relayTwoPin, OUTPUT);
   pinMode(bottomReedPin, INPUT);
@@ -57,7 +58,7 @@ void loop() {
       if(doorOpen){
         close_door();
       }
-    }else if(analogValue > 15){
+    }else if(analogValue > 20){
       Serial.print("door open status: ");
       Serial.println(doorOpen);
       if(digitalRead(greenLedPin) == HIGH){
