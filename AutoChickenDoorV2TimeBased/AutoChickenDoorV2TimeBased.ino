@@ -9,6 +9,8 @@ const int downThreshold = 1;
 const int upThreshold = 15;
 const int waitTimeLightSensor = 15000;
 const int waitTimeManualMode = 3000;
+const int closeTime = 10000;
+const int openTime = 11000;
 
 bool doSerial = true;
 int analogValue = 0; // init the analog value to zero
@@ -19,9 +21,6 @@ int toggleState = LOW;
 
 unsigned long starttime = 0;
 unsigned long endtime = 0;
-
-int closeTime = 9000;
-int openTime = 11000;
 
 bool isOpen = true;
 
