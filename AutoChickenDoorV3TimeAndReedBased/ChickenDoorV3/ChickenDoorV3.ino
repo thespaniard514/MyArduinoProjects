@@ -6,7 +6,7 @@ const int bottomReedPin = 7;
 const int topReedPin = 8;
 
 const int downThreshold = 1;
-const int upThreshold = 15;
+const int upThreshold = 10;
 const int waitTimeLightSensor = 15000;
 const int waitTimeManualMode = 3000;
 const int closeTime = 10000;
